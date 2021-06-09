@@ -1,22 +1,18 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>My Sketch</title>
-    
+
+<head>
+    <title>Season Machine</title>
+
     <!-- Load the Processing.js library -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.6.0/processing.min.js"></script>
-	</head>
-	<body>
-		<script type="application/processing">
-			void setup(){
-				size(1200, 600);
-			}
-			
-            draw = function() {
-                background(50);
-                rect(mouseX,mouseY,200,200);
-            }
-		</script>
-		<canvas> </canvas>
-	</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.6.0/processing.min.js"></script>
+</head>
+
+<body>
+    <script type="application/processing">
+        void setup(){ size(1200, 600); } var seasons = ["winter","spring","summer","autumn"]; var cyclePos = 0; frameRate(60); draw = function() { background(50); text(seasons[cyclePos],10,30); cyclePos = cyclePos + 1; if (cyclePos > 4) { cyclePos = 0 } }
+    </script>
+    <canvas> </canvas>
+</body>
+
 </html>

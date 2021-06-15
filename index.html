@@ -10,7 +10,26 @@
 
 <body>
     <script type="application/processing">
-        void setup(){ size(1200, 600); } var seasons = ["winter","spring","summer","autumn"]; var cyclePos = 0; frameRate(60); draw = function() { background(50); text(seasons[cyclePos],10,30); cyclePos = cyclePos + 1; if (cyclePos > 4) { cyclePos = 0 } }
+        void setup(){ size(1200, 600); }
+        var seasons = ["winter","spring","summer","autumn"];
+        var timeOfDay = ["day","night"];
+        var cyclePos = 0;
+        noStroke();
+        var sunX = 0;
+        var sunY = 325;
+
+        frameRate(60);
+        draw = function() { 
+            background(65, 209, 219);
+            rect(0,333,408,69);
+            text(seasons[cyclePos],10,30);
+            ellipse(sunX,sunY,100,100);
+            sunX = sunX + 10;
+            sunY = -sunX * sunX + 600;
+        };
+
+    
+
     </script>
     <canvas> </canvas>
 </body>

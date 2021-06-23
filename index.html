@@ -11,21 +11,157 @@
 <body>
     <script type="application/processing">
         void setup(){ size(1200, 600); }
-        var seasons = ["winter","spring","summer","autumn"];
-        var timeOfDay = ["day","night"];
-        var cyclePos = 0;
-        noStroke();
-        var sunX = 0;
-        var sunY = 325;
+//This code belongs to Mathias Zarate Diaz, AKA LumaControl. Feel free to use some of it, but DO NOT COPY AS A WHOLE PROGRAM.
 
-        frameRate(60);
-        draw = function() { 
-            background(65, 209, 219);
-            rect(0,333,408,69);
-            text(seasons[cyclePos],10,30);
-            ellipse(sunX,sunY,100,100);
-            sunX = sunX + 10;
-            sunY = -sunX * sunX + 600;
+
+// Time of day variables
+var timeOfDay = ["day","night"];
+var timeOfDayPos = 0;
+var date = 0;
+
+//Default background colour (nighttime)
+var backgroundColour = [10, 10, 100];
+
+// Season variables
+var seasons = ["winter","spring","summer","autumn"];
+var seasonCyclePos = 0;
+
+// Sun position variables
+var sunX = -70;
+var sunY = 0;
+
+// Moon position variables
+var moonX = -70;
+var moonY = 0;
+
+// house variables
+var houseX = 289;
+var houseY = 253;
+var houseSize = 100;
+var windowColourNight = [10,10,100];
+var windowColourDay = [255, 208, 0];
+
+
+// Updates location of sun whenever function is called.
+var sunUpdate = function() {
+    sunX += 3;
+    sunY = 0.08*(sunX-200) * 0.08*(sunX-200) + 10;
+    fill (255, 242, 0);
+    ellipse(sunX,sunY,100,100);
+
+   
+};
+
+var moonUpdate = function() {
+        if (timeOfDayPos === 1) { 
+    moonX += 3;
+    moonY = 0.08*(moonX-200) * 0.08*(moonX-200) + 10;
+    fill (150, 150, 150);
+    ellipse(moonX,moonY,100,100);
+    fill (117, 113, 117);
+
+    ellipse(moonX-20,moonY-30,22,19);
+    ellipse(moonX-20,moonY+20,29,33);
+    ellipse(moonX+20,moonY-5,25,36);
+    }
+    else {
+    moonX = -70;
+    }
+    
+
+   
+};
+
+// Updates background colour dependent on sun state.
+var backgroundUpdate = function() {
+    
+    background(backgroundColour[0],backgroundColour[1],backgroundColour[2]);
+        if (sunX > -50 && sunX < 200) {
+    backgroundColour[1] = backgroundColour[1] + 2;
+    backgroundColour[2] = backgroundColour[2] + 2;    
+    }
+    
+    if (sunX > 300 && sunX < 550) {
+    backgroundColour[1] = backgroundColour[1] - 2;
+    backgroundColour[2] = backgroundColour[2] - 2;
+    
+    }
+    };
+    
+//Updates the timeOfDayPos integer dependent on the sun state.
+var timeOfDayUpdate = function() {
+    if (sunX >= 470) {timeOfDayPos = 1;}
+    if (sunX >= 1010) {timeOfDayPos = 0;sunX = -70; date++;}
+    return timeOfDay[timeOfDayPos];
+};
+
+var currentSeason = function() {
+//TODO: fix this horrible statement. Doesn't work like it should :)
+  switch(true) {
+    case date >= 0 <= 2:
+        fill(255, 255, 255);
+        text("spring",200,200);
+        break;
+    case date >= 3:
+        text("summer",200,200);
+        break;
+    case date >= 6:
+        text("autumn",200,200);
+        break;
+    case date >= 9:
+        text("winter",200,200);
+        break;
+    case date >= 12:
+        date = 0;
+        break;
+  }
+};
+
+frameRate(60);
+noStroke();
+
+var drawHouse = function() { 
+fill(163, 155, 142);
+
+//House body
+rect(houseX,houseY,houseSize,houseSize-20);
+fill(153, 43, 43);
+triangle(houseX-10,houseY,houseX+50,houseY+-62,houseX+110,houseY);
+
+//Interior lights logic
+        if (timeOfDayPos === 1) {
+    fill(windowColourDay[0],windowColourDay[1],windowColourDay[2]);
+    }
+    
+    if (timeOfDayPos === 0) {
+
+    fill(windowColourNight[0],windowColourNight[1],windowColourNight[2]);
+
+    
+    }
+    //windows
+    rect(houseX+10,houseY+10,houseSize/4,houseSize/4);
+    rect(houseX+60,houseY+10,houseSize/4,houseSize/4);
+};
+
+//Main function
+draw = function() { 
+    backgroundUpdate();
+    sunUpdate();
+    moonUpdate();
+    
+    fill(232, 198, 5);
+    currentSeason();
+    fill(36, 150, 70);
+    rect(0,333,408,69);
+    text(date,51,30);
+    text(timeOfDay[timeOfDayPos],23,30);
+    timeOfDayUpdate();
+    drawHouse();
+};
+
+    
+
         };
 
     
